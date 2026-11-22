@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Esnad">
+<meta name="theme-color" content="#25313E">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icon-180.png">
+<link rel="icon" type="image/png" href="icon-512.png">
+<title>Esnad · Visitor survey</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#25313E; --navy2:#33414F; --line:#3E4C5A; --orange:#F7944D; --orange-ink:#B4500B;
+    --mist:#C3CCD3; --soft:#D5DCE1; --paper:#FFFFFF; --ground:#EEF2F2;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;height:100%;background:var(--navy);color:#fff;
+    font-family:'IBM Plex Sans','IBM Plex Sans Arabic',system-ui,sans-serif;
+    -webkit-tap-highlight-color:transparent; -webkit-user-select:none; user-select:none; overscroll-behavior:none}
+  [lang="ar"] body, body.ar{font-family:'IBM Plex Sans Arabic','IBM Plex Sans',system-ui,sans-serif}
+  .app{min-height:100%;min-height:100dvh;display:flex;flex-direction:column;max-width:900px;margin:0 auto;
+    padding:calc(40px + env(safe-area-inset-top)) calc(clamp(24px,6vw,64px) + env(safe-area-inset-right)) calc(32px + env(safe-area-inset-bottom)) calc(clamp(24px,6vw,64px) + env(safe-area-inset-left))}
+  .phone-qr{margin-top:20px;width:100%;display:flex;align-items:center;gap:18px;padding:16px 18px;border-radius:20px;background:var(--navy2);text-align:start}
+  .phone-qr img{width:96px;height:96px;border-radius:10px;background:#fff;flex-shrink:0}
+  .phone-qr p{margin:0;font-size:18px;font-weight:600}
+  .phone-qr .en{direction:ltr;font-family:'IBM Plex Sans',sans-serif;font-size:15px;font-weight:500;color:var(--mist);margin-top:4px}
+  @media (max-width:600px){ .phone-qr{display:none} }
+  .top{display:flex;justify-content:space-between;align-items:center;gap:12px}
+  .mono{font-family:'IBM Plex Mono',monospace;font-weight:500;letter-spacing:.06em}
+  .tag{font-size:15px;color:var(--mist)}
+  .pill{font-size:15px;padding:7px 14px;border-radius:999px;border:1px solid var(--line);color:#fff}
+  .screen{flex:1;display:none;flex-direction:column}
+  .screen.on{display:flex}
+  .center{align-items:center;text-align:center}
+  .logo{margin:0;font-size:clamp(56px,10vw,84px);font-weight:700;line-height:1;direction:ltr;font-family:'IBM Plex Sans',sans-serif}
+  .logo b{color:var(--orange);font-weight:700}
+  .logo-ar{margin:6px 0 0;font-family:'IBM Plex Sans Arabic',sans-serif;font-size:clamp(44px,8vw,64px);font-weight:700;color:var(--orange);line-height:1.3}
+  h1{margin:18px 0 0;font-size:clamp(26px,4.4vw,36px);line-height:1.25;font-weight:600;text-wrap:balance}
+  h2{margin:0;font-size:clamp(28px,4.6vw,38px);line-height:1.25;font-weight:700;text-wrap:balance}
+  .sub{margin:12px 0 0;font-size:19px;line-height:1.55;color:var(--soft);text-wrap:balance}
+  .lead-en{direction:ltr;font-family:'IBM Plex Sans',sans-serif}
+  .start-card{margin-top:auto;width:100%;background:var(--paper);color:var(--navy);border-radius:28px;padding:28px;display:flex;flex-direction:column;gap:18px}
+  .start-card p{margin:0;font-size:22px;font-weight:700}
+  .start-card .en{direction:ltr;font-family:'IBM Plex Sans',sans-serif;color:#5A6672;font-size:18px;font-weight:500}
+  .langs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+  button{font:inherit;cursor:pointer;border:0}
+  .btn-main{min-height:84px;border-radius:18px;background:var(--orange);color:var(--navy);font-size:26px;font-weight:700;padding:0 20px}
+  .btn-main:active{transform:scale(.98)}
+  .btn-main.en{font-family:'IBM Plex Sans',sans-serif}
+  .btn-main.ar{font-family:'IBM Plex Sans Arabic',sans-serif}
+  .btn-dark{background:var(--navy);color:#fff}
+  .home-foot{margin-top:28px;width:100%;display:flex;justify-content:space-between;align-items:center;gap:16px;color:var(--mist);font-size:15px}
+  .link-btn{background:none;color:var(--mist);font-size:15px;text-decoration:underline;text-underline-offset:4px;padding:10px 4px;min-height:44px}
+  .progress{display:flex;gap:8px;margin:28px 0 36px}
+  .progress span{height:6px;flex:1;border-radius:999px;background:var(--line)}
+  .progress span.done{background:var(--orange)}
+  .qnum{font-size:15px;color:var(--orange);margin-bottom:12px}
+  .opts{display:flex;flex-direction:column;gap:14px;margin-top:32px}
+  .opt{min-height:84px;border-radius:18px;background:var(--navy2);color:#fff;font-size:24px;font-weight:600;padding:0 26px;
+       display:flex;align-items:center;justify-content:space-between;gap:16px;border:2px solid transparent;text-align:start}
+  .opt:active,.opt.picked{border-color:var(--orange);background:#3A4A5A}
+  .opt .hint{font-size:16px;font-weight:500;color:var(--mist)}
+  .scale{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px;margin-top:36px;direction:ltr}
+  .scale button{aspect-ratio:1;border-radius:18px;background:var(--navy2);color:#fff;font-size:34px;font-weight:700;border:2px solid transparent}
+  .scale button:active,.scale button.picked{border-color:var(--orange);background:var(--orange);color:var(--navy)}
+  .scale-legend{display:flex;justify-content:space-between;margin-top:12px;font-size:16px;color:var(--mist);direction:ltr}
+  .bar{margin-top:auto;display:flex;justify-content:space-between;align-items:center;padding-top:24px}
+  .back{background:none;color:var(--mist);font-size:18px;min-height:56px;padding:0 8px}
+  .email-wrap{margin-top:28px;display:flex;flex-direction:column;gap:10px}
+  .email-wrap label{font-size:18px;color:var(--soft)}
+  .email-wrap input{min-height:72px;border-radius:16px;border:2px solid var(--line);background:var(--navy2);color:#fff;font:inherit;font-size:22px;padding:0 20px;direction:ltr;text-align:left;-webkit-user-select:text;user-select:text}
+  .email-wrap input:focus{outline:none;border-color:var(--orange)}
+  .err{min-height:24px;color:#FFB37D;font-size:16px}
+  .note{font-size:15px;color:var(--mist);line-height:1.5}
+  .row-btns{display:flex;gap:12px;margin-top:8px}
+  .row-btns .btn-main{flex:1;min-height:72px;font-size:22px}
+  .btn-ghost{min-height:72px;border-radius:18px;background:none;border:2px solid var(--line);color:#fff;font-size:20px;font-weight:600;padding:0 22px}
+  .thanks{margin-top:8px}
+  .stats{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:28px}
+  .stat{background:var(--paper);color:var(--navy);border-radius:20px;padding:20px 22px;display:flex;flex-direction:column;gap:6px;text-align:start}
+  .stat .n{font-size:44px;font-weight:700;line-height:1;direction:ltr;text-align:inherit}
+  .stat .l{font-size:16px;line-height:1.4;color:#3E4A56}
+  .breakdown{margin-top:20px;background:var(--navy2);border-radius:20px;padding:20px 22px;display:flex;flex-direction:column;gap:14px}
+  .breakdown h3{margin:0;font-size:18px;font-weight:600}
+  .brow{display:grid;grid-template-columns:120px 1fr 56px;gap:12px;align-items:center;font-size:16px}
+  .btrack{height:14px;border-radius:999px;background:var(--line);overflow:hidden}
+  .bfill{height:100%;border-radius:999px;background:var(--orange);width:0;transition:width .6s ease}
+  .bfill.q{background:var(--mist)}
+  .bval{direction:ltr;text-align:end;font-weight:600}
+  .status{font-size:14px;color:var(--mist);margin-top:14px;min-height:20px}
+  .countdown{font-size:15px;color:var(--mist)}
+  .empty{margin-top:28px;font-size:18px;color:var(--soft)}
+  @media (max-height:700px){ .app{padding-top:24px} .start-card{padding:20px} .opt{min-height:68px} }
+</style>
+</head>
+<body class="ar">
+<div class="app">
+  <div class="top">
+    <span class="mono tag">SAIF 2026 · RIYADH</span>
+    <span class="mono pill">SAIF130025</span>
+  </div>
+
+  <!-- HOME -->
+  <section class="screen center on" id="s-home" aria-label="Home">
+    <div style="margin-top:44px">
+      <p class="logo"><b>&lt;</b> Esnad <b>&gt;</b></p>
+      <p class="logo-ar" lang="ar">إسناد</p>
+    </div>
+    <h1 class="lead-en" lang="en">From a project idea to a fair, ready work plan.</h1>
+    <p class="sub" lang="ar">منصة ذكية لإدارة مشاريع البرمجة الجامعية، توزّع المهام بعدل وتكتشف الثغرات الأمنية.</p>
+    <div class="start-card" style="margin-top:44px">
+      <div>
+        <p lang="ar">شاركنا رأيك في أقل من ٣٠ ثانية</p>
+        <p class="en" lang="en">Share your opinion in under 30 seconds</p>
+      </div>
+      <div class="langs">
+        <button class="btn-main ar" type="button" data-start="ar" lang="ar">ابدأ بالعربي</button>
+        <button class="btn-main en btn-dark" type="button" data-start="en" lang="en">Start in English</button>
+      </div>
+    </div>
+    <div class="phone-qr">
+      <img src="qr-phone.png" alt="QR code to answer the survey on your phone">
+      <div>
+        <p lang="ar">زحمة؟ جاوب من جوالك</p>
+        <p class="en" lang="en">Busy? Answer on your phone</p>
+      </div>
+    </div>
+    <div class="home-foot">
+      <span lang="en" class="lead-en">Khaled Almathami · Yousef Alhamza · Muhannad Altahhan</span>
+      <button class="link-btn" type="button" id="see-results" data-i18n="seeResults">النتائج</button>
+    </div>
+  </section>
+
+  <!-- Q1 role -->
+  <section class="screen" id="s-q1" aria-labelledby="q1-t">
+    <div class="progress" aria-hidden="true"><span class="done"></span><span></span><span></span><span></span></div>
+    <p class="mono qnum" data-i18n="q1n"></p>
+    <h2 id="q1-t" data-i18n="q1"></h2>
+    <div class="opts">
+      <button class="opt" type="button" data-q="role" data-v="student"><span data-i18n="r_student"></span></button>
+      <button class="opt" type="button" data-q="role" data-v="faculty"><span data-i18n="r_faculty"></span></button>
+      <button class="opt" type="button" data-q="role" data-v="industry"><span data-i18n="r_industry"></span></button>
+      <button class="opt" type="button" data-q="role" data-v="other"><span data-i18n="r_other"></span></button>
+    </div>
+    <div class="bar"><button class="back" type="button" data-back data-i18n="cancel"></button><span></span></div>
+  </section>
+
+  <!-- Q2 fairness -->
+  <section class="screen" id="s-q2" aria-labelledby="q2-t">
+    <div class="progress" aria-hidden="true"><span class="done"></span><span class="done"></span><span></span><span></span></div>
+    <p class="mono qnum" data-i18n="q2n"></p>
+    <h2 id="q2-t" data-i18n="q2"></h2>
+    <div class="opts">
+      <button class="opt" type="button" data-q="fair" data-v="yes"><span data-i18n="f_yes"></span></button>
+      <button class="opt" type="button" data-q="fair" data-v="sometimes"><span data-i18n="f_some"></span></button>
+      <button class="opt" type="button" data-q="fair" data-v="no"><span data-i18n="f_no"></span><span class="hint" data-i18n="f_no_hint"></span></button>
+    </div>
+    <div class="bar"><button class="back" type="button" data-back data-i18n="back"></button><span></span></div>
+  </section>
+
+  <!-- Q3 rating -->
+  <section class="screen" id="s-q3" aria-labelledby="q3-t">
+    <div class="progress" aria-hidden="true"><span class="done"></span><span class="done"></span><span class="done"></span><span></span></div>
+    <p class="mono qnum" data-i18n="q3n"></p>
+    <h2 id="q3-t" data-i18n="q3"></h2>
+    <p class="sub" style="font-size:18px" data-i18n="q3sub"></p>
+    <div class="scale" role="group" aria-labelledby="q3-t">
+      <button type="button" data-q="rating" data-v="1">1</button>
+      <button type="button" data-q="rating" data-v="2">2</button>
+      <button type="button" data-q="rating" data-v="3">3</button>
+      <button type="button" data-q="rating" data-v="4">4</button>
+      <button type="button" data-q="rating" data-v="5">5</button>
+    </div>
+    <div class="scale-legend"><span data-i18n="low"></span><span data-i18n="high"></span></div>
+    <div class="bar"><button class="back" type="button" data-back data-i18n="back"></button><span></span></div>
+  </section>
+
+  <!-- Q4 try + email -->
+  <section class="screen" id="s-q4" aria-labelledby="q4-t">
+    <div class="progress" aria-hidden="true"><span class="done"></span><span class="done"></span><span class="done"></span><span class="done"></span></div>
+    <p class="mono qnum" data-i18n="q4n"></p>
+    <h2 id="q4-t" data-i18n="q4"></h2>
+    <div class="opts" id="try-opts">
+      <button class="opt" type="button" data-q="tryIt" data-v="yes"><span data-i18n="t_yes"></span></button>
+      <button class="opt" type="button" data-q="tryIt" data-v="no"><span data-i18n="t_no"></span></button>
+    </div>
+    <div class="email-wrap" id="email-wrap" hidden>
+      <label for="email" data-i18n="emailLabel"></label>
+      <input id="email" type="email" inputmode="email" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="name@example.com">
+      <div class="err" id="email-err" role="alert"></div>
+      <p class="note" data-i18n="emailNote"></p>
+      <div class="row-btns">
+        <button class="btn-main" type="button" id="send" data-i18n="send"></button>
+        <button class="btn-ghost" type="button" id="skip" data-i18n="skip"></button>
+      </div>
+    </div>
+    <div class="bar"><button class="back" type="button" data-back data-i18n="back"></button><span></span></div>
+  </section>
+
+  <!-- RESULTS -->
+  <section class="screen" id="s-done" aria-labelledby="done-t">
+    <h2 id="done-t" class="thanks" style="margin-top:28px" data-i18n="thanks"></h2>
+    <p class="sub" id="done-sub" data-i18n="resultsSub"></p>
+    <div id="stats-area"></div>
+    <p class="status" id="status" role="status"></p>
+    <div class="bar">
+      <span class="countdown" id="countdown"></span>
+      <button class="btn-main" type="button" id="finish" style="min-height:64px;font-size:20px;padding:0 28px" data-i18n="finish"></button>
+    </div>
+  </section>
+</div>
+
+<script>
+(function(){
+  const T = {
+    ar:{
+      q1n:'سؤال ١ من ٤', q1:'وش يصف دورك؟',
+      r_student:'طالب / طالبة', r_faculty:'عضو هيئة تدريس', r_industry:'من شركة أو جهة', r_other:'غير ذلك',
+      q2n:'سؤال ٢ من ٤', q2:'في مشاريع البرمجة الجماعية اللي مرّت عليك، هل كان توزيع الشغل عادل؟',
+      f_yes:'نعم، عادل', f_some:'أحيانًا', f_no:'لا', f_no_hint:'كم شخص شال الفريق',
+      q3n:'سؤال ٣ من ٤', q3:'لأي درجة تتوقع إن إسناد يحل هالمشكلة؟',
+      q3sub:'إسناد يقسّم فكرة المشروع لمهام بالذكاء الاصطناعي، ويوزّعها بعدل حسب الصعوبة، ويفحص الكود أمنيًا.',
+      low:'ما يحلها', high:'يحلها تمامًا',
+      q4n:'سؤال ٤ من ٤', q4:'تحب تجرب إسناد لما نطلقه؟',
+      t_yes:'نعم، أبي أجربه', t_no:'لا، شكرًا',
+      emailLabel:'اكتب إيميلك ونتواصل معك (اختياري)', emailNote:'نستخدم إيميلك فقط للتواصل بخصوص إسناد، وما نشاركه مع أحد.',
+      send:'إرسال', skip:'تخطي', back:'رجوع', cancel:'إلغاء',
+      emailBad:'الإيميل غير صحيح، تأكد منه أو اضغط تخطي.',
+      thanks:'شكرًا لك!', resultsSub:'هذي نتائج زوار جناحنا لين الحين:',
+      seeResults:'النتائج', resultsTitle:'نتائج الاستبيان',
+      total:'زائر شاركنا رأيه', unfair:'واجهوا توزيعًا غير عادل (أحيانًا أو لا)',
+      avg:'متوسط تقييم إسناد من ٥', want:'يبون يجربون إسناد',
+      fairTitle:'هل كان توزيع الشغل عادل؟', fy:'نعم', fs:'أحيانًا', fn:'لا',
+      finish:'تم', back5:'ترجع الشاشة للبداية بعد', sec:'ث',
+      empty:'ما فيه إجابات لين الحين. كن أول من يشارك!',
+      offline:'إجابتك محفوظة على الجهاز، وبتنرسل أول ما يرجع الاتصال.',
+      loading:'جاري تحميل النتائج…', stale:'تعذّر تحديث النتائج الآن؛ قد تكون غير محدّثة.',
+      nodb:'الاستبيان غير مربوط بقاعدة البيانات بعد.',
+      lost:'تعذّر حفظ إجابتك، فضلًا أعد المحاولة بعد قليل.'
+    },
+    en:{
+      q1n:'QUESTION 1 OF 4', q1:'Which best describes you?',
+      r_student:'Student', r_faculty:'Faculty member', r_industry:'Company or organization', r_other:'Other',
+      q2n:'QUESTION 2 OF 4', q2:'In team software projects you have seen, was the work split fairly?',
+      f_yes:'Yes, fairly', f_some:'Sometimes', f_no:'No', f_no_hint:'a few carried the team',
+      q3n:'QUESTION 3 OF 4', q3:'How well do you think Esnad solves this?',
+      q3sub:'Esnad uses AI to turn a project idea into tasks, splits them fairly by difficulty, and scans the code for security issues.',
+      low:'Not at all', high:'Completely',
+      q4n:'QUESTION 4 OF 4', q4:'Would you like to try Esnad when we launch?',
+      t_yes:'Yes, I want to try it', t_no:'No, thanks',
+      emailLabel:'Leave your email and we will reach out (optional)', emailNote:'We only use your email to contact you about Esnad, and never share it.',
+      send:'Send', skip:'Skip', back:'Back', cancel:'Cancel',
+      emailBad:'That email does not look right. Check it or tap Skip.',
+      thanks:'Thank you!', resultsSub:'Here is what visitors to our booth said so far:',
+      seeResults:'Results', resultsTitle:'Survey results',
+      total:'visitors shared their opinion', unfair:'saw unfair work splits (sometimes or no)',
+      avg:'average rating for Esnad, out of 5', want:'want to try Esnad',
+      fairTitle:'Was the work split fairly?', fy:'Yes', fs:'Sometimes', fn:'No',
+      finish:'Done', back5:'Returning to start in', sec:'s',
+      empty:'No answers yet. Be the first!',
+      offline:'Your answer is saved on this device and will be sent once the connection is back.',
+      loading:'Loading results…', stale:'Could not refresh results right now; they may be out of date.',
+      nodb:'The survey is not connected to its sheet yet.',
+      lost:'Your answer could not be saved. Please try again in a moment.'
+    }
+  };
+
+  let lang = 'ar';
+  let answers = {};
+  // >>> Paste the Web app URL from Google Apps Script here <<<
+  const ENDPOINT = 'https://script.google.com/macros/s/AKfycbx5PoalkAbEXYoNctiUytc7GJY4Yv8gxAlub1QyxUKmuhq41sNi_axhZOJcAB5yGilK/exec';
+  const KEY = 'esnad-saif-2026';
+  const configured = /^https:\/\/script\.google\.com\//.test(ENDPOINT);
+  let agg = null, loaded = false, stale = false, pollTimer = null;
+  let idleTimer = null, cdTimer = null;
+  const PKEY = 'esnad-survey-pending';
+
+  const $ = s => document.querySelector(s);
+  const $$ = s => Array.from(document.querySelectorAll(s));
+
+  function applyLang(l){
+    lang = l;
+    document.documentElement.lang = l;
+    document.documentElement.dir = l === 'ar' ? 'rtl' : 'ltr';
+    document.body.classList.toggle('ar', l === 'ar');
+    $$('[data-i18n]').forEach(el => { const k = el.getAttribute('data-i18n'); if (T[l][k] != null) el.textContent = T[l][k]; });
+  }
+
+  function show(id){
+    $$('.screen').forEach(s => s.classList.toggle('on', s.id === id));
+    window.scrollTo(0,0);
+    armIdle(id);
+  }
+
+  const order = ['s-q1','s-q2','s-q3','s-q4'];
+  function current(){ const s = $('.screen.on'); return s ? s.id : 's-home'; }
+
+  function resetAll(){
+    answers = {};
+    $$('.picked').forEach(b => b.classList.remove('picked'));
+    $('#email').value = ''; $('#email-err').textContent = '';
+    $('#email-wrap').hidden = true; $('#try-opts').hidden = false;
+    clearInterval(cdTimer); cdTimer = null;
+    applyLang('ar');
+    show('s-home');
+  }
+
+  function armIdle(id){
+    clearTimeout(idleTimer);
+    if (id === 's-home') return;
+    const ms = id === 's-done' ? 0 : 60000;
+    if (ms) idleTimer = setTimeout(resetAll, ms);
+  }
+  ['pointerdown','keydown','input'].forEach(ev => document.addEventListener(ev, () => {
+    const id = current(); if (id !== 's-home' && id !== 's-done') armIdle(id);
+  }, {passive:true}));
+
+  $$('[data-start]').forEach(b => b.addEventListener('click', () => {
+    answers = {}; applyLang(b.getAttribute('data-start')); show('s-q1');
+  }));
+
+  $$('[data-back]').forEach(b => b.addEventListener('click', () => {
+    const i = order.indexOf(current());
+    if (current() === 's-q4' && !$('#email-wrap').hidden){ $('#email-wrap').hidden = true; $('#try-opts').hidden = false; return; }
+    if (i <= 0) resetAll(); else show(order[i-1]);
+  }));
+
+  $$('[data-q]').forEach(b => b.addEventListener('click', () => {
+    const q = b.getAttribute('data-q'), v = b.getAttribute('data-v');
+    $$('[data-q="'+q+'"]').forEach(x => x.classList.toggle('picked', x === b));
+    answers[q] = q === 'rating' ? Number(v) : v;
+    setTimeout(() => {
+      if (q === 'role') show('s-q2');
+      else if (q === 'fair') show('s-q3');
+      else if (q === 'rating') show('s-q4');
+      else if (q === 'tryIt'){
+        if (v === 'yes'){ $('#try-opts').hidden = true; $('#email-wrap').hidden = false; setTimeout(() => $('#email').focus(), 50); }
+        else submit('');
+      }
+    }, 160);
+  }));
+
+  $('#send').addEventListener('click', () => {
+    const e = $('#email').value.trim();
+    if (e && !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(e)){ $('#email-err').textContent = T[lang].emailBad; return; }
+    submit(e);
+  });
+  $('#skip').addEventListener('click', () => submit(''));
+  $('#email').addEventListener('keydown', ev => { if (ev.key === 'Enter') $('#send').click(); });
+
+  function readPending(){ try { return JSON.parse(localStorage.getItem(PKEY) || '[]'); } catch(e){ return []; } }
+  function writePending(list){ try { localStorage.setItem(PKEY, JSON.stringify(list)); return true; } catch(e){ return false; } }
+
+  function newId(){ return Date.now().toString(36) + '-' + Math.random().toString(36).slice(2,8); }
+
+  async function saveOne(rec){
+    if (!configured) throw new Error('not-configured');
+    const ctrl = new AbortController(); const t = setTimeout(() => ctrl.abort(), 15000);
+    try {
+      const res = await fetch(ENDPOINT, { method:'POST', body: JSON.stringify(Object.assign({ key: KEY, id: rec.id }, rec.body)), signal: ctrl.signal });
+      const j = await res.json();
+      if (!j || !j.ok) throw new Error((j && j.error) || 'save-failed');
+    } finally { clearTimeout(t); }
+  }
+
+  async function fetchAgg(){
+    if (!configured) { loaded = true; return; }
+    const ctrl = new AbortController(); const t = setTimeout(() => ctrl.abort(), 10000);
+    try {
+      const res = await fetch(ENDPOINT + '?t=' + Date.now(), { signal: ctrl.signal });
+      agg = await res.json(); loaded = true; stale = false;
+    } catch(e){ stale = true; loaded = true; }
+    finally { clearTimeout(t); }
+    if (current() === 's-done') renderStats();
+  }
+
+  async function flushPending(){
+    if (!configured) return;
+    const list = readPending(); if (!list.length) return;
+    const left = [];
+    for (const rec of list){
+      try { await saveOne(rec); } catch(e){ left.push(rec); }
+    }
+    writePending(left);
+  }
+
+  async function submit(email){
+    const rec = { id: newId(), body: {
+      role: answers.role || null, fair: answers.fair || null, rating: answers.rating || null,
+      tryIt: answers.tryIt || null, email: email || null, lang, at: new Date().toISOString()
+    }};
+    $('#status').textContent = '';
+    showDone();
+    try { await saveOne(rec); }
+    catch(e){
+      try { await new Promise(r => setTimeout(r, 600 + Math.random()*600)); await saveOne(rec); }
+      catch(e2){ const p = readPending(); p.push(rec); $('#status').textContent = writePending(p) ? T[lang].offline : T[lang].lost; }
+    }
+    fetchAgg();
+  }
+
+  function showDone(fromHome){
+    $('#done-t').textContent = fromHome ? T[lang].resultsTitle : T[lang].thanks;
+    $('#done-sub').textContent = T[lang].resultsSub;
+    show('s-done');
+    renderStats();
+    fetchAgg();
+    clearInterval(pollTimer); pollTimer = setInterval(() => { if (current() === 's-done') fetchAgg(); else clearInterval(pollTimer); }, 15000);
+    let n = fromHome ? 60 : 20;
+    const cd = $('#countdown');
+    const tick = () => { cd.textContent = T[lang].back5 + ' ' + n + ' ' + T[lang].sec; if (n-- <= 0){ resetAll(); } };
+    clearInterval(cdTimer); tick(); cdTimer = setInterval(tick, 1000);
+  }
+  $('#finish').addEventListener('click', resetAll);
+  $('#see-results').addEventListener('click', () => showDone(true));
+
+  function pct(a,b){ return b ? Math.round(a*100/b) : 0; }
+  function fmt(n){ return lang === 'ar' ? Number(n).toLocaleString('ar-SA') : String(n); }
+
+  function renderStats(){
+    const area = $('#stats-area');
+    const L = T[lang];
+    const msg = text => { area.innerHTML = '<p class="empty"></p>'; area.firstChild.textContent = text; };
+    if (!configured) return msg(L.nodb);
+    if (!agg) return msg(stale ? L.stale : L.loading);
+    const n = agg.total || 0;
+    if (!n) return msg(L.empty);
+    const fy = agg.fair.yes || 0, fs = agg.fair.sometimes || 0, fnn = agg.fair.no || 0;
+    const fairN = fy + fs + fnn;
+    const avg = agg.ratingN ? agg.ratingSum / agg.ratingN : 0;
+    const want = agg.tryYes || 0, tryN = agg.tryN || 0;
+
+    area.innerHTML = '';
+    const grid = document.createElement('div'); grid.className = 'stats';
+    const card = (num, label) => { const d = document.createElement('div'); d.className = 'stat';
+      const a = document.createElement('span'); a.className = 'n'; a.textContent = num;
+      const b = document.createElement('span'); b.className = 'l'; b.textContent = label;
+      d.append(a,b); return d; };
+    grid.append(
+      card(fmt(n), L.total),
+      card(fmt(pct(fs+fnn, fairN)) + '%', L.unfair),
+      card(avg ? (lang === 'ar' ? avg.toFixed(1).replace('.', '٫').replace(/\d/g, d => '٠١٢٣٤٥٦٧٨٩'[d]) : avg.toFixed(1)) : '–', L.avg),
+      card(fmt(pct(want, tryN)) + '%', L.want)
+    );
+    area.append(grid);
+
+    const bd = document.createElement('div'); bd.className = 'breakdown';
+    const h = document.createElement('h3'); h.textContent = L.fairTitle; bd.append(h);
+    [[L.fy, fy, true],[L.fs, fs, false],[L.fn, fnn, false]].forEach(([label, v, quiet]) => {
+      const row = document.createElement('div'); row.className = 'brow';
+      const l = document.createElement('span'); l.textContent = label;
+      const t = document.createElement('div'); t.className = 'btrack';
+      const f = document.createElement('div'); f.className = 'bfill' + (quiet ? ' q' : ''); t.append(f);
+      const val = document.createElement('span'); val.className = 'bval'; val.textContent = pct(v, fairN) + '%';
+      row.append(l, t, val); bd.append(row);
+      requestAnimationFrame(() => { f.style.width = pct(v, fairN) + '%'; });
+    });
+    area.append(bd);
+    if (stale) { const s = document.createElement('p'); s.className = 'status'; s.textContent = L.stale; area.append(s); }
+  }
+
+
+  applyLang('ar');
+
+  flushPending();
+  setInterval(flushPending, 30000);
+  window.addEventListener('online', flushPending);
+})();
+</script>
+</body>
+</html>
